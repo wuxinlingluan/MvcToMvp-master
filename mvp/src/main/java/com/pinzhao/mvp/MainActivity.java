@@ -7,14 +7,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.pinzhao.mvp.dagger2.component.DaggerMainActivityComponent;
+import com.pinzhao.mvp.dagger2.module.MainActivityModule;
 import com.pinzhao.mvp.presenter.MainActivityPresenter;
+
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText mUserName;
     private EditText mPassWord;
     private ProgressDialog dialog;
-    private   MainActivityPresenter presenter;
+    //第一步
+    @Inject
+     MainActivityPresenter presenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
         //密码
         mPassWord = (EditText) findViewById(R.id.password);
         dialog = new ProgressDialog(this);
-        presenter=new MainActivityPresenter(this);
+  //      presenter=new MainActivityPresenter(this);
+        DaggerMainActivityComponent component= (DaggerMainActivityComponent) DaggerMainActivityComponent.builder().mainActivityModule(new MainActivityModule(this)).build();
+        component.in(this);
     }
 
     /**
